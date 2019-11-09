@@ -1,0 +1,836 @@
+   1               		.file	"main.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               	.global	usbFunctionSetup
+  18               	usbFunctionSetup:
+  19               	.LFB7:
+  20               	.LM1:
+  21               	.LVL0:
+  22               	/* prologue: function */
+  23               	/* frame size = 0 */
+  24               	/* stack size = 0 */
+  25               	.L__stack_usage = 0
+  26               	.LM2:
+  27 0000 FC01      		movw r30,r24
+  28               	.LVL1:
+  29               	.LM3:
+  30 0002 80E0      		ldi r24,lo8(reportBuffer)
+  31 0004 90E0      		ldi r25,hi8(reportBuffer)
+  32               	.LVL2:
+  33 0006 9093 0000 		sts usbMsgPtr+1,r25
+  34 000a 8093 0000 		sts usbMsgPtr,r24
+  35               	.LM4:
+  36 000e 8081      		ld r24,Z
+  37 0010 8076      		andi r24,lo8(96)
+  38 0012 8032      		cpi r24,lo8(32)
+  39 0014 01F4      		brne .L10
+  40               	.LM5:
+  41 0016 8181      		ldd r24,Z+1
+  42 0018 8130      		cpi r24,lo8(1)
+  43 001a 01F0      		breq .L8
+  44               	.LM6:
+  45 001c 8930      		cpi r24,lo8(9)
+  46 001e 01F4      		brne .L3
+  47               	.LM7:
+  48 0020 8681      		ldd r24,Z+6
+  49 0022 9781      		ldd r25,Z+7
+  50 0024 8130      		cpi r24,1
+  51 0026 9105      		cpc r25,__zero_reg__
+  52 0028 01F4      		brne .L10
+  53               	.LM8:
+  54 002a 81E0      		ldi r24,lo8(1)
+  55 002c 8093 0000 		sts expectReport,r24
+  56               	.LM9:
+  57 0030 8FEF      		ldi r24,lo8(-1)
+  58 0032 0895      		ret
+  59               	.L3:
+  60               	.LM10:
+  61 0034 8230      		cpi r24,lo8(2)
+  62 0036 01F4      		brne .L4
+  63               	.LM11:
+  64 0038 80E0      		ldi r24,lo8(idleRate)
+  65 003a 90E0      		ldi r25,hi8(idleRate)
+  66 003c 00C0      		rjmp .L12
+  67               	.L4:
+  68               	.LM12:
+  69 003e 8A30      		cpi r24,lo8(10)
+  70 0040 01F4      		brne .L5
+  71               	.LVL3:
+  72               	.LM13:
+  73 0042 8381      		ldd r24,Z+3
+  74 0044 8093 0000 		sts idleRate,r24
+  75 0048 00C0      		rjmp .L10
+  76               	.L5:
+  77               	.LM14:
+  78 004a 8330      		cpi r24,lo8(3)
+  79 004c 01F4      		brne .L6
+  80               	.LM15:
+  81 004e 8381      		ldd r24,Z+3
+  82 0050 8823      		tst r24
+  83 0052 01F4      		brne .L10
+  84               	.LM16:
+  85 0054 1092 0000 		sts protocolVer,__zero_reg__
+  86 0058 0895      		ret
+  87               	.L6:
+  88               	.LM17:
+  89 005a 8B30      		cpi r24,lo8(11)
+  90 005c 01F4      		brne .L11
+  91               	.LM18:
+  92 005e 80E0      		ldi r24,lo8(protocolVer)
+  93 0060 90E0      		ldi r25,hi8(protocolVer)
+  94               	.L12:
+  95 0062 9093 0000 		sts usbMsgPtr+1,r25
+  96 0066 8093 0000 		sts usbMsgPtr,r24
+  97               	.LM19:
+  98 006a 81E0      		ldi r24,lo8(1)
+  99 006c 0895      		ret
+ 100               	.L8:
+ 101               	.LM20:
+ 102 006e 88E0      		ldi r24,lo8(8)
+ 103 0070 0895      		ret
+ 104               	.L10:
+ 105               	.LM21:
+ 106 0072 80E0      		ldi r24,lo8(0)
+ 107 0074 0895      		ret
+ 108               	.L11:
+ 109 0076 80E0      		ldi r24,lo8(0)
+ 110               	.LM22:
+ 111 0078 0895      		ret
+ 112               	.LFE7:
+ 114               	.global	usbFunctionWrite
+ 116               	usbFunctionWrite:
+ 117               	.LFB8:
+ 118               	.LM23:
+ 119               	.LVL4:
+ 120               	/* prologue: function */
+ 121               	/* frame size = 0 */
+ 122               	/* stack size = 0 */
+ 123               	.L__stack_usage = 0
+ 124               	.LM24:
+ 125 007a 2091 0000 		lds r18,expectReport
+ 126 007e 2223      		tst r18
+ 127 0080 01F0      		breq .L14
+ 128               	.LM25:
+ 129 0082 6130      		cpi r22,lo8(1)
+ 130 0084 01F4      		brne .L14
+ 131               	.LM26:
+ 132 0086 FC01      		movw r30,r24
+ 133 0088 8081      		ld r24,Z
+ 134               	.LVL5:
+ 135 008a 8093 0000 		sts LEDstate,r24
+ 136               	.LM27:
+ 137 008e 81FF      		sbrs r24,1
+ 138 0090 00C0      		rjmp .L15
+ 139               	.LM28:
+ 140 0092 919A      		sbi 50-32,1
+ 141 0094 00C0      		rjmp .L16
+ 142               	.L15:
+ 143               	.LM29:
+ 144 0096 9198      		cbi 50-32,1
+ 145               	.L16:
+ 146               	.LM30:
+ 147 0098 8091 0000 		lds r24,LEDstate
+ 148 009c 82FF      		sbrs r24,2
+ 149 009e 00C0      		rjmp .L17
+ 150               	.LM31:
+ 151 00a0 949A      		sbi 50-32,4
+ 152 00a2 00C0      		rjmp .L14
+ 153               	.L17:
+ 154               	.LM32:
+ 155 00a4 9498      		cbi 50-32,4
+ 156               	.LVL6:
+ 157               	.L14:
+ 158               	.LM33:
+ 159 00a6 1092 0000 		sts expectReport,__zero_reg__
+ 160               	.LM34:
+ 161 00aa 81E0      		ldi r24,lo8(1)
+ 162               	/* epilogue start */
+ 163 00ac 0895      		ret
+ 164               	.LFE8:
+ 166               	.global	main
+ 168               	main:
+ 169               	.LFB9:
+ 170               	.LM35:
+ 171 00ae 2F92      		push r2
+ 172 00b0 3F92      		push r3
+ 173 00b2 4F92      		push r4
+ 174 00b4 5F92      		push r5
+ 175 00b6 6F92      		push r6
+ 176 00b8 7F92      		push r7
+ 177 00ba 8F92      		push r8
+ 178 00bc 9F92      		push r9
+ 179 00be AF92      		push r10
+ 180 00c0 BF92      		push r11
+ 181 00c2 CF92      		push r12
+ 182 00c4 DF92      		push r13
+ 183 00c6 EF92      		push r14
+ 184 00c8 FF92      		push r15
+ 185 00ca 0F93      		push r16
+ 186 00cc 1F93      		push r17
+ 187 00ce DF93      		push r29
+ 188 00d0 CF93      		push r28
+ 189 00d2 00D0      		rcall .
+ 190 00d4 00D0      		rcall .
+ 191 00d6 CDB7      		in r28,__SP_L__
+ 192 00d8 DEB7      		in r29,__SP_H__
+ 193               	/* prologue: function */
+ 194               	/* frame size = 4 */
+ 195               	/* stack size = 22 */
+ 196               	.L__stack_usage = 22
+ 197               	.LVL7:
+ 198               	.LM36:
+ 199 00da 2FE0      		ldi r18,lo8(15)
+ 200 00dc 88E1      		ldi r24,lo8(24)
+ 201 00de 90E0      		ldi r25,hi8(24)
+ 202               	/* #APP */
+ 203               	 ;  281 "main.c" 1
+ 204 00e0 0FB6      		in __tmp_reg__,__SREG__
+ 205 00e2 F894      		cli
+ 206 00e4 A895      		wdr
+ 207 00e6 81BD      		out 33,r24
+ 208 00e8 0FBE      		out __SREG__,__tmp_reg__
+ 209 00ea 21BD      		out 33,r18
+ 210               	 ;  0 "" 2
+ 211               	/* #NOAPP */
+ 212               	.LBB24:
+ 213               	.LBB25:
+ 214               	.LM37:
+ 215 00ec 8FEF      		ldi r24,lo8(-1)
+ 216 00ee 88BB      		out 56-32,r24
+ 217               	.LM38:
+ 218 00f0 17BA      		out 55-32,__zero_reg__
+ 219               	.LM39:
+ 220 00f2 85BB      		out 53-32,r24
+ 221               	.LM40:
+ 222 00f4 14BA      		out 52-32,__zero_reg__
+ 223               	.LM41:
+ 224 00f6 8AEF      		ldi r24,lo8(-6)
+ 225 00f8 82BB      		out 50-32,r24
+ 226               	.LM42:
+ 227 00fa 87E1      		ldi r24,lo8(23)
+ 228 00fc 81BB      		out 49-32,r24
+ 229               	.LVL8:
+ 230               	.LBB26:
+ 231               	.LBB27:
+ 232               	.LM43:
+ 233 00fe 2CE2      		 ldi r18,lo8(44)
+ 234 0100 2A95      	    1:dec r18
+ 235 0102 01F4      	    brne 1b
+ 236               	.LBE27:
+ 237               	.LBE26:
+ 238               	.LM44:
+ 239 0104 82E1      		ldi r24,lo8(18)
+ 240 0106 81BB      		out 49-32,r24
+ 241               	.LM45:
+ 242 0108 85E0      		ldi r24,lo8(5)
+ 243 010a 83BF      		out 83-32,r24
+ 244               	.LBE25:
+ 245               	.LBE24:
+ 246               	.LM46:
+ 247 010c 0E94 0000 		call usbInit
+ 248               	.LM47:
+ 249               	/* #APP */
+ 250               	 ;  287 "main.c" 1
+ 251 0110 7894      		sei
+ 252               	 ;  0 "" 2
+ 253               	.LM48:
+ 254               	/* #NOAPP */
+ 255 0112 CC24      		clr r12
+ 256               	.LM49:
+ 257 0114 DD24      		clr r13
+ 258               	.LBB28:
+ 259               	.LBB29:
+ 260               	.LM50:
+ 261 0116 AA24      		clr r10
+ 262 0118 AA94      		dec r10
+ 263               	.LM51:
+ 264 011a 31E0      		ldi r19,lo8(1)
+ 265 011c 832E      		mov r8,r19
+ 266 011e 912C      		mov r9,__zero_reg__
+ 267               	.LM52:
+ 268 0120 24E1      		ldi r18,lo8(20)
+ 269 0122 522E      		mov r5,r18
+ 270               	.LM53:
+ 271 0124 90E0      		ldi r25,lo8(reportBuffer)
+ 272 0126 692E      		mov r6,r25
+ 273 0128 90E0      		ldi r25,hi8(reportBuffer)
+ 274 012a 792E      		mov r7,r25
+ 275 012c 88E0      		ldi r24,lo8(8)
+ 276 012e 482E      		mov r4,r24
+ 277               	.LM54:
+ 278 0130 3324      		clr r3
+ 279 0132 3394      		inc r3
+ 280               	.LM55:
+ 281 0134 2224      		clr r2
+ 282 0136 2394      		inc r2
+ 283               	.LVL9:
+ 284               	.L44:
+ 285               	.LBE29:
+ 286               	.LBE28:
+ 287               	.LM56:
+ 288               	/* #APP */
+ 289               	 ;  290 "main.c" 1
+ 290 0138 A895      		wdr
+ 291               	 ;  0 "" 2
+ 292               	.LM57:
+ 293               	/* #NOAPP */
+ 294 013a 0E94 0000 		call usbPoll
+ 295               	.LVL10:
+ 296 013e 80E0      		ldi r24,lo8(0)
+ 297 0140 90E0      		ldi r25,hi8(0)
+ 298               	.LVL11:
+ 299               	.L25:
+ 300               	.LBB36:
+ 301               	.LBB35:
+ 302               	.LM58:
+ 303 0142 8830      		cpi r24,lo8(8)
+ 304 0144 00F4      		brsh .L22
+ 305               	.LM59:
+ 306 0146 21B3      		in r18,49-32
+ 307 0148 2F71      		andi r18,lo8(31)
+ 308 014a 21BB      		out 49-32,r18
+ 309               	.LM60:
+ 310 014c 22B3      		in r18,50-32
+ 311 014e 206E      		ori r18,lo8(-32)
+ 312 0150 22BB      		out 50-32,r18
+ 313               	.LVL12:
+ 314               	.LBB30:
+ 315               	.LM61:
+ 316 0152 FC01      		movw r30,r24
+ 317 0154 E050      		subi r30,lo8(-(modmask))
+ 318 0156 F040      		sbci r31,hi8(-(modmask))
+ 319               	/* #APP */
+ 320               	 ;  162 "main.c" 1
+ 321 0158 E491      		lpm r30, Z
+ 322               		
+ 323               	 ;  0 "" 2
+ 324               	.LVL13:
+ 325               	/* #NOAPP */
+ 326               	.LBE30:
+ 327               	.LM62:
+ 328 015a E7BB      		out 55-32,r30
+ 329               	.LM63:
+ 330 015c E095      		com r30
+ 331               	.LVL14:
+ 332 015e E8BB      		out 56-32,r30
+ 333 0160 00C0      		rjmp .L23
+ 334               	.LVL15:
+ 335               	.L22:
+ 336               	.LM64:
+ 337 0162 17BA      		out 55-32,__zero_reg__
+ 338               	.LM65:
+ 339 0164 A8BA      		out 56-32,r10
+ 340               	.LM66:
+ 341 0166 21B3      		in r18,49-32
+ 342 0168 2F71      		andi r18,lo8(31)
+ 343 016a 21BB      		out 49-32,r18
+ 344               	.LM67:
+ 345 016c 41B3      		in r20,49-32
+ 346               	.LM68:
+ 347 016e 9C01      		movw r18,r24
+ 348 0170 2350      		subi r18,lo8(-(-3))
+ 349 0172 3040      		sbci r19,hi8(-(-3))
+ 350               	.LM69:
+ 351 0174 B401      		movw r22,r8
+ 352 0176 00C0      		rjmp 2f
+ 353 0178 660F      	1:	lsl r22
+ 354 017a 771F      		rol r23
+ 355 017c 2A95      	2:	dec r18
+ 356 017e 02F4      		brpl 1b
+ 357 0180 9B01      		movw r18,r22
+ 358 0182 462B      		or r20,r22
+ 359 0184 41BB      		out 49-32,r20
+ 360               	.LM70:
+ 361 0186 32B3      		in r19,50-32
+ 362 0188 2095      		com r18
+ 363 018a 2323      		and r18,r19
+ 364 018c 22BB      		out 50-32,r18
+ 365               	.L23:
+ 366               	.LVL16:
+ 367               	.LBB31:
+ 368               	.LBB32:
+ 369               	.LM71:
+ 370 018e 78E7      		 ldi r23,lo8(120)
+ 371 0190 7A95      	    1:dec r23
+ 372 0192 01F4      	    brne 1b
+ 373               	.LBE32:
+ 374               	.LBE31:
+ 375               	.LM72:
+ 376 0194 23B3      		in r18,51-32
+ 377               	.LVL17:
+ 378               	.LM73:
+ 379 0196 FC01      		movw r30,r24
+ 380 0198 E050      		subi r30,lo8(-(bitbuf))
+ 381 019a F040      		sbci r31,hi8(-(bitbuf))
+ 382 019c 3081      		ld r19,Z
+ 383 019e 2317      		cp r18,r19
+ 384 01a0 01F0      		breq .L24
+ 385               	.LM74:
+ 386 01a2 5092 0000 		sts debounce.1772,r5
+ 387               	.L24:
+ 388               	.LM75:
+ 389 01a6 FC01      		movw r30,r24
+ 390 01a8 E050      		subi r30,lo8(-(bitbuf))
+ 391 01aa F040      		sbci r31,hi8(-(bitbuf))
+ 392 01ac 2083      		st Z,r18
+ 393 01ae 0196      		adiw r24,1
+ 394               	.LM76:
+ 395 01b0 8B30      		cpi r24,11
+ 396 01b2 9105      		cpc r25,__zero_reg__
+ 397 01b4 01F4      		brne .L25
+ 398               	.LM77:
+ 399 01b6 8091 0000 		lds r24,debounce.1772
+ 400 01ba 8130      		cpi r24,lo8(1)
+ 401 01bc 01F0      		breq .+2
+ 402 01be 00C0      		rjmp .L38
+ 403               	.LVL18:
+ 404               	.LM78:
+ 405 01c0 F301      		movw r30,r6
+ 406 01c2 242D      		mov r18,r4
+ 407               	.LVL19:
+ 408 01c4 1192      		st Z+,__zero_reg__
+ 409 01c6 2A95      	        dec r18
+ 410 01c8 01F4      		brne .-6
+ 411               	.LVL20:
+ 412 01ca EE24      		clr r14
+ 413 01cc FF24      		clr r15
+ 414 01ce 00E0      		ldi r16,lo8(0)
+ 415 01d0 10E0      		ldi r17,hi8(0)
+ 416               	.LM79:
+ 417 01d2 31E0      		ldi r19,lo8(1)
+ 418               	.LM80:
+ 419 01d4 20E0      		ldi r18,lo8(0)
+ 420               	.LVL21:
+ 421               	.L33:
+ 422               	.LM81:
+ 423 01d6 F801      		movw r30,r16
+ 424 01d8 E050      		subi r30,lo8(-(bitbuf))
+ 425 01da F040      		sbci r31,hi8(-(bitbuf))
+ 426 01dc B080      		ld r11,Z
+ 427               	.LVL22:
+ 428               	.LM82:
+ 429 01de 6B2D      		mov r22,r11
+ 430 01e0 6F3F      		cpi r22,lo8(-1)
+ 431 01e2 01F4      		brne .+2
+ 432 01e4 00C0      		rjmp .L27
+ 433               	.LM83:
+ 434 01e6 1982      		std Y+1,__zero_reg__
+ 435 01e8 2A82      		std Y+2,r2
+ 436 01ea 00C0      		rjmp .L28
+ 437               	.LVL23:
+ 438               	.L32:
+ 439               	.LM84:
+ 440 01ec 8A81      		ldd r24,Y+2
+ 441 01ee 8B21      		and r24,r11
+ 442 01f0 01F4      		brne .L29
+ 443               	.LBB33:
+ 444               	.LM85:
+ 445 01f2 8981      		ldd r24,Y+1
+ 446               	.LVL24:
+ 447 01f4 F701      		movw r30,r14
+ 448 01f6 E80F      		add r30,r24
+ 449 01f8 F11D      		adc r31,__zero_reg__
+ 450 01fa E050      		subi r30,lo8(-(keymap))
+ 451 01fc F040      		sbci r31,hi8(-(keymap))
+ 452               	/* #APP */
+ 453               	 ;  191 "main.c" 1
+ 454 01fe E491      		lpm r30, Z
+ 455               		
+ 456               	 ;  0 "" 2
+ 457               	.LVL25:
+ 458               	/* #NOAPP */
+ 459               	.LBE33:
+ 460               	.LM86:
+ 461 0200 E636      		cpi r30,lo8(102)
+ 462 0202 00F0      		brlo .L30
+ 463               	.LVL26:
+ 464               	.LBB34:
+ 465               	.LM87:
+ 466 0204 F0E0      		ldi r31,lo8(0)
+ 467 0206 E050      		subi r30,lo8(-(modmask-102))
+ 468 0208 F040      		sbci r31,hi8(-(modmask-102))
+ 469               	.LVL27:
+ 470               	/* #APP */
+ 471               	 ;  193 "main.c" 1
+ 472 020a E491      		lpm r30, Z
+ 473               		
+ 474               	 ;  0 "" 2
+ 475               	.LVL28:
+ 476               	/* #NOAPP */
+ 477               	.LBE34:
+ 478 020c 8091 0000 		lds r24,reportBuffer
+ 479               	.LVL29:
+ 480 0210 E82B      		or r30,r24
+ 481               	.LVL30:
+ 482 0212 E093 0000 		sts reportBuffer,r30
+ 483               	.LVL31:
+ 484 0216 00C0      		rjmp .L29
+ 485               	.LVL32:
+ 486               	.L30:
+ 487               	.LM88:
+ 488 0218 EE23      		tst r30
+ 489 021a 01F0      		breq .L29
+ 490               	.LM89:
+ 491 021c 3F5F      		subi r19,lo8(-(1))
+ 492               	.LVL33:
+ 493 021e 3830      		cpi r19,lo8(8)
+ 494 0220 00F0      		brlo .L31
+ 495               	.LM90:
+ 496 0222 21FD      		sbrc r18,1
+ 497 0224 00C0      		rjmp .L29
+ 498               	.LM91:
+ 499 0226 80E0      		ldi r24,lo8(reportBuffer+2)
+ 500 0228 90E0      		ldi r25,hi8(reportBuffer+2)
+ 501               	.LVL34:
+ 502 022a 61E0      		ldi r22,lo8(1)
+ 503 022c 70E0      		ldi r23,hi8(1)
+ 504 022e 46E0      		ldi r20,lo8(6)
+ 505 0230 50E0      		ldi r21,hi8(6)
+ 506 0232 2C83      		std Y+4,r18
+ 507 0234 3B83      		std Y+3,r19
+ 508 0236 0E94 0000 		call memset
+ 509               	.LVL35:
+ 510               	.LM92:
+ 511 023a 2C81      		ldd r18,Y+4
+ 512 023c 2260      		ori r18,lo8(2)
+ 513               	.LVL36:
+ 514 023e 3B81      		ldd r19,Y+3
+ 515 0240 00C0      		rjmp .L29
+ 516               	.LVL37:
+ 517               	.L31:
+ 518               	.LM93:
+ 519 0242 A32F      		mov r26,r19
+ 520 0244 B0E0      		ldi r27,lo8(0)
+ 521 0246 A050      		subi r26,lo8(-(reportBuffer))
+ 522 0248 B040      		sbci r27,hi8(-(reportBuffer))
+ 523 024a EC93      		st X,r30
+ 524               	.LVL38:
+ 525               	.L29:
+ 526               	.LM94:
+ 527 024c 8981      		ldd r24,Y+1
+ 528 024e 8F5F      		subi r24,lo8(-(1))
+ 529 0250 8983      		std Y+1,r24
+ 530 0252 8A81      		ldd r24,Y+2
+ 531 0254 880F      		lsl r24
+ 532 0256 8A83      		std Y+2,r24
+ 533               	.LVL39:
+ 534               	.L28:
+ 535 0258 8981      		ldd r24,Y+1
+ 536 025a 8830      		cpi r24,lo8(8)
+ 537 025c 00F4      		brsh .+2
+ 538 025e 00C0      		rjmp .L32
+ 539               	.LVL40:
+ 540               	.L27:
+ 541 0260 0F5F      		subi r16,lo8(-(1))
+ 542 0262 1F4F      		sbci r17,hi8(-(1))
+ 543 0264 88E0      		ldi r24,lo8(8)
+ 544 0266 90E0      		ldi r25,hi8(8)
+ 545 0268 E80E      		add r14,r24
+ 546 026a F91E      		adc r15,r25
+ 547               	.LM95:
+ 548 026c 0B30      		cpi r16,11
+ 549 026e 1105      		cpc r17,__zero_reg__
+ 550 0270 01F0      		breq .+2
+ 551 0272 00C0      		rjmp .L33
+ 552               	.LM96:
+ 553 0274 2160      		ori r18,lo8(1)
+ 554               	.LVL41:
+ 555 0276 00C0      		rjmp .L26
+ 556               	.LVL42:
+ 557               	.L38:
+ 558               	.LM97:
+ 559 0278 20E0      		ldi r18,lo8(0)
+ 560               	.LVL43:
+ 561               	.L26:
+ 562               	.LM98:
+ 563 027a 8091 0000 		lds r24,debounce.1772
+ 564 027e 8823      		tst r24
+ 565 0280 01F0      		breq .L34
+ 566 0282 8150      		subi r24,lo8(-(-1))
+ 567 0284 8093 0000 		sts debounce.1772,r24
+ 568               	.L34:
+ 569               	.LVL44:
+ 570               	.LBE35:
+ 571               	.LBE36:
+ 572               	.LM99:
+ 573 0288 08B6      		in __tmp_reg__,88-32
+ 574 028a 00FE      		sbrs __tmp_reg__,0
+ 575 028c 00C0      		rjmp .L35
+ 576               	.LM100:
+ 577 028e 38BE      		out 88-32,r3
+ 578               	.LM101:
+ 579 0290 8091 0000 		lds r24,idleRate
+ 580 0294 8823      		tst r24
+ 581 0296 01F0      		breq .L35
+ 582               	.LM102:
+ 583 0298 9C2D      		mov r25,r12
+ 584 029a 9530      		cpi r25,lo8(5)
+ 585 029c 00F0      		brlo .L39
+ 586               	.LM103:
+ 587 029e EEEF      		ldi r30,lo8(-2)
+ 588 02a0 CE0E      		add r12,r30
+ 589               	.LVL45:
+ 590               	.L35:
+ 591               	.LM104:
+ 592 02a2 D22A      		or r13,r18
+ 593               	.LVL46:
+ 594               	.LM105:
+ 595 02a4 01F4      		brne .+2
+ 596 02a6 00C0      		rjmp .L44
+ 597 02a8 00C0      		rjmp .L36
+ 598               	.LVL47:
+ 599               	.L39:
+ 600               	.LM106:
+ 601 02aa C82E      		mov r12,r24
+ 602               	.LVL48:
+ 603               	.LM107:
+ 604 02ac DD24      		clr r13
+ 605 02ae D394      		inc r13
+ 606               	.LVL49:
+ 607               	.L36:
+ 608               	.LM108:
+ 609 02b0 8091 0000 		lds r24,usbTxLen1
+ 610 02b4 84FF      		sbrs r24,4
+ 611 02b6 00C0      		rjmp .L44
+ 612               	.LVL50:
+ 613               	.LM109:
+ 614 02b8 80E0      		ldi r24,lo8(reportBuffer)
+ 615 02ba 90E0      		ldi r25,hi8(reportBuffer)
+ 616 02bc 68E0      		ldi r22,lo8(8)
+ 617 02be 0E94 0000 		call usbSetInterrupt
+ 618               	.LVL51:
+ 619               	.LM110:
+ 620 02c2 DD24      		clr r13
+ 621 02c4 00C0      		rjmp .L44
+ 622               	.LFE9:
+ 624               	.global	keymap
+ 625               		.section	.progmem.data,"a",@progbits
+ 628               	keymap:
+ 629 0000 27        		.byte	39
+ 630 0001 1E        		.byte	30
+ 631 0002 1F        		.byte	31
+ 632 0003 20        		.byte	32
+ 633 0004 21        		.byte	33
+ 634 0005 22        		.byte	34
+ 635 0006 23        		.byte	35
+ 636 0007 24        		.byte	36
+ 637 0008 25        		.byte	37
+ 638 0009 26        		.byte	38
+ 639 000a 2D        		.byte	45
+ 640 000b 2E        		.byte	46
+ 641 000c 31        		.byte	49
+ 642 000d 2F        		.byte	47
+ 643 000e 30        		.byte	48
+ 644 000f 33        		.byte	51
+ 645 0010 34        		.byte	52
+ 646 0011 32        		.byte	50
+ 647 0012 36        		.byte	54
+ 648 0013 37        		.byte	55
+ 649 0014 38        		.byte	56
+ 650 0015 6A        		.byte	106
+ 651 0016 04        		.byte	4
+ 652 0017 05        		.byte	5
+ 653 0018 06        		.byte	6
+ 654 0019 07        		.byte	7
+ 655 001a 08        		.byte	8
+ 656 001b 09        		.byte	9
+ 657 001c 0A        		.byte	10
+ 658 001d 0B        		.byte	11
+ 659 001e 0C        		.byte	12
+ 660 001f 0D        		.byte	13
+ 661 0020 0E        		.byte	14
+ 662 0021 0F        		.byte	15
+ 663 0022 10        		.byte	16
+ 664 0023 11        		.byte	17
+ 665 0024 12        		.byte	18
+ 666 0025 13        		.byte	19
+ 667 0026 14        		.byte	20
+ 668 0027 15        		.byte	21
+ 669 0028 16        		.byte	22
+ 670 0029 17        		.byte	23
+ 671 002a 18        		.byte	24
+ 672 002b 19        		.byte	25
+ 673 002c 1A        		.byte	26
+ 674 002d 1B        		.byte	27
+ 675 002e 1C        		.byte	28
+ 676 002f 1D        		.byte	29
+ 677 0030 67        		.byte	103
+ 678 0031 66        		.byte	102
+ 679 0032 68        		.byte	104
+ 680 0033 39        		.byte	57
+ 681 0034 6C        		.byte	108
+ 682 0035 3A        		.byte	58
+ 683 0036 3B        		.byte	59
+ 684 0037 3C        		.byte	60
+ 685 0038 3D        		.byte	61
+ 686 0039 3E        		.byte	62
+ 687 003a 29        		.byte	41
+ 688 003b 2B        		.byte	43
+ 689 003c 4B        		.byte	75
+ 690 003d 2A        		.byte	42
+ 691 003e 4D        		.byte	77
+ 692 003f 28        		.byte	40
+ 693 0040 2C        		.byte	44
+ 694 0041 4A        		.byte	74
+ 695 0042 49        		.byte	73
+ 696 0043 4C        		.byte	76
+ 697 0044 50        		.byte	80
+ 698 0045 52        		.byte	82
+ 699 0046 51        		.byte	81
+ 700 0047 4F        		.byte	79
+ 701 0048 55        		.byte	85
+ 702 0049 57        		.byte	87
+ 703 004a 54        		.byte	84
+ 704 004b 62        		.byte	98
+ 705 004c 59        		.byte	89
+ 706 004d 5A        		.byte	90
+ 707 004e 5B        		.byte	91
+ 708 004f 5C        		.byte	92
+ 709 0050 5D        		.byte	93
+ 710 0051 5E        		.byte	94
+ 711 0052 5F        		.byte	95
+ 712 0053 60        		.byte	96
+ 713 0054 61        		.byte	97
+ 714 0055 56        		.byte	86
+ 715 0056 4E        		.byte	78
+ 716 0057 63        		.byte	99
+ 717               	.global	modmask
+ 720               	modmask:
+ 721 0058 01        		.byte	1
+ 722 0059 02        		.byte	2
+ 723 005a 04        		.byte	4
+ 724 005b 08        		.byte	8
+ 725 005c 10        		.byte	16
+ 726 005d 20        		.byte	32
+ 727 005e 40        		.byte	64
+ 728 005f 80        		.byte	-128
+ 729               	.global	usbDescriptorHidReport
+ 732               	usbDescriptorHidReport:
+ 733 0060 05        		.byte	5
+ 734 0061 01        		.byte	1
+ 735 0062 09        		.byte	9
+ 736 0063 06        		.byte	6
+ 737 0064 A1        		.byte	-95
+ 738 0065 01        		.byte	1
+ 739 0066 05        		.byte	5
+ 740 0067 07        		.byte	7
+ 741 0068 19        		.byte	25
+ 742 0069 E0        		.byte	-32
+ 743 006a 29        		.byte	41
+ 744 006b E7        		.byte	-25
+ 745 006c 15        		.byte	21
+ 746 006d 00        		.byte	0
+ 747 006e 25        		.byte	37
+ 748 006f 01        		.byte	1
+ 749 0070 75        		.byte	117
+ 750 0071 01        		.byte	1
+ 751 0072 95        		.byte	-107
+ 752 0073 08        		.byte	8
+ 753 0074 81        		.byte	-127
+ 754 0075 02        		.byte	2
+ 755 0076 95        		.byte	-107
+ 756 0077 01        		.byte	1
+ 757 0078 75        		.byte	117
+ 758 0079 08        		.byte	8
+ 759 007a 81        		.byte	-127
+ 760 007b 03        		.byte	3
+ 761 007c 95        		.byte	-107
+ 762 007d 05        		.byte	5
+ 763 007e 75        		.byte	117
+ 764 007f 01        		.byte	1
+ 765 0080 05        		.byte	5
+ 766 0081 08        		.byte	8
+ 767 0082 19        		.byte	25
+ 768 0083 01        		.byte	1
+ 769 0084 29        		.byte	41
+ 770 0085 05        		.byte	5
+ 771 0086 91        		.byte	-111
+ 772 0087 02        		.byte	2
+ 773 0088 95        		.byte	-107
+ 774 0089 01        		.byte	1
+ 775 008a 75        		.byte	117
+ 776 008b 03        		.byte	3
+ 777 008c 91        		.byte	-111
+ 778 008d 03        		.byte	3
+ 779 008e 95        		.byte	-107
+ 780 008f 06        		.byte	6
+ 781 0090 75        		.byte	117
+ 782 0091 08        		.byte	8
+ 783 0092 15        		.byte	21
+ 784 0093 00        		.byte	0
+ 785 0094 25        		.byte	37
+ 786 0095 65        		.byte	101
+ 787 0096 05        		.byte	5
+ 788 0097 07        		.byte	7
+ 789 0098 19        		.byte	25
+ 790 0099 00        		.byte	0
+ 791 009a 29        		.byte	41
+ 792 009b 65        		.byte	101
+ 793 009c 81        		.byte	-127
+ 794 009d 00        		.byte	0
+ 795 009e C0        		.byte	-64
+ 796               	.global	expectReport
+ 797               	.global	expectReport
+ 798               		.section .bss
+ 801               	expectReport:
+ 802 0000 00        		.skip 1,0
+ 803               	.global	LEDstate
+ 804               	.global	LEDstate
+ 807               	LEDstate:
+ 808 0001 00        		.skip 1,0
+ 809               		.lcomm idleRate,1
+ 810               		.lcomm reportBuffer,8
+ 811               		.data
+ 814               	bitbuf:
+ 815 0000 FF        		.byte	-1
+ 816 0001 FF        		.byte	-1
+ 817 0002 FF        		.byte	-1
+ 818 0003 FF        		.byte	-1
+ 819 0004 FF        		.byte	-1
+ 820 0005 FF        		.byte	-1
+ 821 0006 FF        		.byte	-1
+ 822 0007 FF        		.byte	-1
+ 823 0008 FF        		.byte	-1
+ 824 0009 FF        		.byte	-1
+ 825 000a FF        		.byte	-1
+ 828               	debounce.1772:
+ 829 000b 05        		.byte	5
+ 832               	protocolVer:
+ 833 000c 01        		.byte	1
+ 874               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\hoony\AppData\Local\Temp\ccJN79Xj.s:2      *ABS*:0000003f __SREG__
+C:\Users\hoony\AppData\Local\Temp\ccJN79Xj.s:3      *ABS*:0000003e __SP_H__
+C:\Users\hoony\AppData\Local\Temp\ccJN79Xj.s:4      *ABS*:0000003d __SP_L__
+C:\Users\hoony\AppData\Local\Temp\ccJN79Xj.s:5      *ABS*:00000034 __CCP__
+C:\Users\hoony\AppData\Local\Temp\ccJN79Xj.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\hoony\AppData\Local\Temp\ccJN79Xj.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\hoony\AppData\Local\Temp\ccJN79Xj.s:18     .text:00000000 usbFunctionSetup
+C:\Users\hoony\AppData\Local\Temp\ccJN79Xj.s:809    .bss:00000003 reportBuffer
+C:\Users\hoony\AppData\Local\Temp\ccJN79Xj.s:801    .bss:00000000 expectReport
+                             .bss:00000002 idleRate
+C:\Users\hoony\AppData\Local\Temp\ccJN79Xj.s:832    .data:0000000c protocolVer
+C:\Users\hoony\AppData\Local\Temp\ccJN79Xj.s:116    .text:0000007a usbFunctionWrite
+C:\Users\hoony\AppData\Local\Temp\ccJN79Xj.s:807    .bss:00000001 LEDstate
+C:\Users\hoony\AppData\Local\Temp\ccJN79Xj.s:168    .text:000000ae main
+C:\Users\hoony\AppData\Local\Temp\ccJN79Xj.s:720    .progmem.data:00000058 modmask
+C:\Users\hoony\AppData\Local\Temp\ccJN79Xj.s:814    .data:00000000 bitbuf
+C:\Users\hoony\AppData\Local\Temp\ccJN79Xj.s:828    .data:0000000b debounce.1772
+C:\Users\hoony\AppData\Local\Temp\ccJN79Xj.s:628    .progmem.data:00000000 keymap
+C:\Users\hoony\AppData\Local\Temp\ccJN79Xj.s:732    .progmem.data:00000060 usbDescriptorHidReport
+
+UNDEFINED SYMBOLS
+usbMsgPtr
+usbInit
+usbPoll
+memset
+usbTxLen1
+usbSetInterrupt
+__do_copy_data
+__do_clear_bss
